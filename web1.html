@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mình Sẽ Là Gì Trong Tương Lai?</title>
+    <!-- Sử dụng Google Fonts: Montserrat cho sự hiện đại, futuristic -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ================= CSS (STYLE.CSS) ================= */
+        :root {
+            --bg-color: #0B0C10;
+            --primary-navy: #1F2833;
+            --accent-cyan: #66FCF1;
+            --accent-teal: #45A29E;
+            --text-light: #C5C6C7;
+            --text-white: #FFFFFF;
+            --purple-pastel: #B19CD9;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Hiệu ứng Background (Particles/Stars) --- */
+        .stars, .twinkling, .clouds {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            display: block;
+        }
+        .stars {
+            background: #000 url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png') repeat top center;
+            z-index: -3;
+        }
+        .twinkling {
+            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png') repeat top center;
+            z-index: -2;
+            animation: move-twink-back 200s linear infinite;
+        }
+        .clouds {
+            background: transparent;
+            background-image: radial-gradient(circle at 15% 50%, rgba(177, 156, 217, 0.08) 0%, transparent 50%),
+                              radial-gradient(circle at 85% 30%, rgba(102, 252, 241, 0.08) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        @keyframes move-twink-back {
+            from {background-position: 0 0;}
+            to {background-position: -10000px 5000px;}
+        }
+
+        /* --- Utility Classes --- */
+        .hidden { display: none !important; }
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1, h2, h3 { font-weight: 700; letter-spacing: 1px; }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--purple-pastel));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            background: transparent;
+            color: var(--accent-cyan);
+            border: 2px solid var(--accent-cyan);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:hover {
+            background: var(--accent-cyan);
+            color: var(--primary-navy);
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+        .btn:disabled {
+            border-color: #555;
+            color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        /* --- Section 1: Landing Page --- */
+        #landing-page { text-align: center; }
+        #landing-page h1 { font-size: 3rem; margin-bottom: 10px; }
+        #landing-page h2 { font-size: 1.5rem; color: var(--text-light); margin-bottom: 30px; font-weight: 300; }
+        #landing-page p { font-size: 1.1rem; line-height: 1.6; color: #ddd; margin-bottom: 40px; }
+        .meta-info { margin-top: 20px; font-size: 0.9rem; color: var(--accent-teal); }
+
+        /* --- Section 2: Quiz Page --- */
+        .progress-container {
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--purple-pastel));
+            width: 0%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        #question-text {
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .option-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        .option-card:hover {
+            background: rgba(102, 252, 241, 0.1);
+            border-color: var(--accent-cyan);
+            transform: translateX(10px);
+        }
+        .option-card.selected {
+            background: rgba(177, 156, 217, 0.2);
+            border-color: var(--purple-pastel);
+            box-shadow: 0 0 15px rgba(177, 156, 217, 0.3);
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .nav-buttons .btn-secondary {
+            border-color: var(--text-light);
+            color: var(--text-light);
+        }
+        .nav-buttons .btn-secondary:hover {
+            background: var(--text-light);
+            color: var(--primary-navy);
+            box-shadow: 0 0 15px var(--text-light);
+        }
+
+        /* --- Section 3: Loading --- */
+        #loading-page { text-align: center; }
+        .spinner {
+            width: 80px; height: 80px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            margin: 0 auto 30px auto;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loading-text { font-size: 1.2rem; color: var(--accent-cyan); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* --- Section 4: Result Page --- */
+        #result-page { animation: fadeIn 1s ease; }
+        .result-header { text-align: center; margin-bottom: 30px; }
+        .job-card {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 252, 241, 0.1), rgba(177, 156, 217, 0.1));
+            border: 1px solid var(--accent-cyan);
+            padding: 40px 20px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(102, 252, 241, 0.1);
+        }
+        .job-icon { font-size: 4rem; margin-bottom: 15px; }
+        .job-title { font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 15px; }
+        .job-desc { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; color: #ddd; }
+        .traits-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .badge {
+            background: rgba(177, 156, 217, 0.2);
+            color: var(--purple-pastel);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--purple-pastel);
+        }
+
+        /* --- Biểu đồ ngang (CSS Chart) --- */
+        .chart-container { margin-bottom: 40px; }
+        .chart-container h3 { margin-bottom: 20px; text-align: center; }
+        .chart-row { display: flex; align-items: center; margin-bottom: 15px; }
+        .chart-label { width: 120px; font-size: 0.9rem; color: var(--text-light); }
+        .chart-bar-bg {
+            flex-grow: 1;
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--purple-pastel));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+        }
+
+        /* --- Bức thư từ tương lai --- */
+        .future-letter {
+            background: rgba(255,255,255,0.05);
+            border-left: 4px solid var(--purple-pastel);
+            padding: 25px;
+            border-radius: 0 15px 15px 0;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .disclaimer { font-size: 0.8rem; color: #777; text-align: center; margin-bottom: 30px; }
+        .result-actions { text-align: center; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            #landing-page h1 { font-size: 2rem; }
+            .job-title { font-size: 1.8rem; }
+            .glass-panel { padding: 25px; }
+            #question-text { font-size: 1.3rem; }
+            .btn { padding: 12px 20px; font-size: 1rem; }
+            .chart-label { width: 90px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Animation Elements -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="clouds"></div>
+
+    <div class="container" id="app">
+        
+        <!-- ================= LANDING PAGE ================= -->
+        <div id="landing-page" class="glass-panel">
+            <h1 class="gradient-text">MÌNH SẼ LÀ GÌ TRONG TƯƠNG LAI?</h1>
+            <h2>30 năm nữa, bạn sẽ trở thành ai?</h2>
+            <p>Không ai có thể biết chính xác tương lai sẽ như thế nào. Nhưng từ những lựa chọn của bạn hôm nay, chúng ta có thể thử hình dung phiên bản của bạn 30 năm sau.</p>
+            <button class="btn" onclick="startQuiz()">BẮT ĐẦU HÀNH TRÌNH &rarr;</button>
+            <div class="meta-info">~ 5 phút &bull; 18 câu hỏi &bull; 1 phiên bản tương lai</div>
+        </div>
+
+        <!-- ================= QUIZ PAGE ================= -->
+        <div id="quiz-page" class="glass-panel hidden">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="quiz-header">
+                <span id="question-counter">Câu 1/18</span>
+                <span class="gradient-text" style="font-size: 0.9rem; cursor: pointer;" onclick="resetData()">Khởi động lại</span>
+            </div>
+            <h2 id="question-text">Question text here?</h2>
+            <div class="options" id="options-container">
+                <!-- Options will be injected here by JS -->
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">&larr; Quay lại</button>
+                <button class="btn" id="btn-next" onclick="nextQuestion()" disabled>Tiếp tục &rarr;</button>
+            </div>
+        </div>
+
+        <!-- ================= LOADING PAGE ================= -->
+        <div id="loading-page" class="glass-panel hidden">
+            <div class="spinner"></div>
+            <h2 class="loading-text" id="loading-text">Đang phân tích lựa chọn của bạn...</h2>
+        </div>
+
+        <!-- ================= RESULT PAGE ================= -->
+        <div id="result-page" class="glass-panel hidden">
+            <div class="result-header">
+                <h2 class="gradient-text">30 NĂM SAU...</h2>
+                <p>Bạn có thể trở thành một:</p>
+            </div>
+
+            <div class="job-card">
+                <div class="job-icon" id="res-icon">🚀</div>
+                <h2 class="job-title" id="res-title">KỸ SƯ AI</h2>
+                <div class="traits-badges" id="res-badges">
+                    <span class="badge">Phân tích</span>
+                    <span class="badge">Công nghệ</span>
+                </div>
+                <p class="job-desc" id="res-desc">Mô tả công việc ở đây.</p>
+                <p style="color: var(--accent-cyan); font-size: 0.95rem;" id="res-simulation">Mô phỏng cuộc sống 30 năm sau...</p>
+            </div>
+
+            <div class="chart-container">
+                <h3>Bản Đồ Tính Cách</h3>
+                <div id="chart-content">
+                    <!-- Chart rows injected by JS -->
+                </div>
+            </div>
+
+            <div class="future-letter">
+                <h3 style="color: var(--text-white); margin-bottom: 10px; font-style: normal;">✉️ Một lời nhắn từ bạn của 30 năm sau</h3>
+                <p id="res-letter">Nội dung bức thư...</p>
+            </div>
+
+            <p class="disclaimer">Đây là kết quả mang tính khám phá và giải trí, không phải bài kiểm tra nghề nghiệp khoa học. Tương lai của bạn vẫn phụ thuộc vào lựa chọn, hoàn cảnh và những điều bạn học được trong 30 năm tới.</p>
+
+            <div class="result-actions">
+                <button class="btn" onclick="restartQuiz()">KHÁM PHÁ LẠI TƯƠNG LAI</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= JAVASCRIPT (SCRIPT.JS) ================= -->
+    <script>
+        /**
+         * HỆ THỐNG ĐIỂM:
+         * 6 Nhóm tính cách:
+         * A: ANALYTICAL (Phân tích)
+         * C: CREATIVE (Sáng tạo)
+         * S: SOCIAL (Xã hội/Đồng cảm)
+         * L: LEADERSHIP (Lãnh đạo)
+         * T: TECHNOLOGY (Công nghệ)
+         * I: INDEPENDENT (Độc lập/Tự chủ)
+         */
+
+        const questions = [
+            {
+                q: "Khi gặp một vấn đề khó, bạn thường…",
+                options: [
+                    { text: "Phân tích từng phần rồi tìm cách giải quyết.", traits: { A: 2, I: 1 } },
+                    { text: "Nghĩ ra nhiều ý tưởng mới.", traits: { C: 2, I: 1 } },
+                    { text: "Hỏi người khác và cùng nhau giải quyết.", traits: { S: 2, L: 1 } },
+                    { text: "Thử ngay một cách rồi điều chỉnh.", traits: { L: 2, C: 1 } },
+                    { text: "Quan sát thật kỹ trước khi hành động.", traits: { A: 2, T: 1 } }
+                ]
+            },
+            {
+                q: "Nếu được chọn một hoạt động cho cả ngày, bạn sẽ thích…",
+                options: [
+                    { text: "Làm một dự án cá nhân.", traits: { I: 2, T: 1 } },
+                    { text: "Đọc, nghiên cứu và học điều mới.", traits: { A: 2, I: 1 } },
+                    { text: "Gặp gỡ và nói chuyện với mọi người.", traits: { S: 2, L: 1 } },
+                    { text: "Thử một trải nghiệm mới.", traits: { C: 2, L: 1 } },
+                    { text: "Làm nghệ thuật / sáng tạo.", traits: { C: 2, I: 1 } }
+                ]
+            },
+            {
+                q: "Bạn cảm thấy mình mạnh nhất ở…",
+                options: [
+                    { text: "Logic và phân tích.", traits: { A: 2, T: 1 } },
+                    { text: "Sáng tạo.", traits: { C: 2, I: 1 } },
+                    { text: "Giao tiếp.", traits: { S: 2, L: 1 } },
+                    { text: "Lãnh đạo.", traits: { L: 2, I: 1 } },
+                    { text: "Đồng cảm với người khác.", traits: { S: 2, C: 1 } }
+                ]
+            },
+            {
+                q: "Khi làm việc nhóm, bạn thường là người…",
+                options: [
+                    { text: "Lên kế hoạch.", traits: { A: 2, L: 1 } },
+                    { text: "Đưa ra ý tưởng.", traits: { C: 2, I: 1 } },
+                    { text: "Kết nối mọi người.", traits: { S: 2, L: 1 } },
+                    { text: "Đứng ra dẫn dắt.", traits: { L: 2, I: 1 } },
+                    { text: "Hỗ trợ những thành viên khác.", traits: { S: 2, T: 1 } }
+                ]
+            },
+            {
+                q: "Điều gì khiến bạn cảm thấy công việc có ý nghĩa?",
+                options: [
+                    { text: "Giải quyết được những vấn đề khó.", traits: { A: 2, T: 1 } },
+                    { text: "Tạo ra thứ gì đó chưa từng có.", traits: { C: 2, I: 1 } },
+                    { text: "Giúp đỡ người khác.", traits: { S: 2, L: 1 } },
+                    { text: "Tạo ra ảnh hưởng lớn.", traits: { L: 2, C: 1 } },
+                    { text: "Có tự do và được sống theo cách mình muốn.", traits: { I: 2, C: 1 } }
+                ]
+            },
+            {
+                q: "Nếu thất bại trong một việc quan trọng, bạn sẽ…",
+                options: [
+                    { text: "Phân tích nguyên nhân.", traits: { A: 2, I: 1 } },
+                    { text: "Nghĩ ra cách khác.", traits: { C: 2, T: 1 } },
+                    { text: "Tâm sự với người mình tin tưởng.", traits: { S: 2, I: 1 } },
+                    { text: "Làm lại ngay.", traits: { L: 2, I: 1 } },
+                    { text: "Tạm dừng để suy nghĩ.", traits: { A: 1, I: 2 } }
+                ]
+            },
+            {
+                q: "Bạn thích môi trường làm việc nào?",
+                options: [
+                    { text: "Yên tĩnh, tập trung.", traits: { I: 2, A: 1 } },
+                    { text: "Năng động và sáng tạo.", traits: { C: 2, S: 1 } },
+                    { text: "Nhiều người và nhiều hoạt động.", traits: { S: 2, L: 1 } },
+                    { text: "Cạnh tranh và có thử thách.", traits: { L: 2, A: 1 } },
+                    { text: "Linh hoạt, tự do.", traits: { I: 2, C: 1 } }
+                ]
+            },
+            {
+                q: "Nếu có 10 tỷ đồng nhưng không cần lo về tiền, bạn sẽ…",
+                options: [
+                    { text: "Đầu tư.", traits: { A: 2, L: 1 } },
+                    { text: "Mở một dự án / công ty.", traits: { L: 2, C: 1 } },
+                    { text: "Làm một dự án xã hội.", traits: { S: 2, L: 1 } },
+                    { text: "Du lịch và trải nghiệm.", traits: { C: 2, I: 1 } },
+                    { text: "Học những thứ mình thích.", traits: { I: 2, A: 1 } }
+                ]
+            },
+            {
+                q: "Bạn thường ra quyết định dựa trên…",
+                options: [
+                    { text: "Logic.", traits: { A: 2, T: 1 } },
+                    { text: "Trực giác.", traits: { C: 2, I: 1 } },
+                    { text: "Cảm xúc.", traits: { S: 2, C: 1 } },
+                    { text: "Kinh nghiệm.", traits: { I: 2, A: 1 } },
+                    { text: "Ý kiến của người khác.", traits: { S: 2, L: 1 } }
+                ]
+            },
+            {
+                q: "Bạn muốn người khác nhớ đến mình vì…",
+                options: [
+                    { text: "Trí tuệ.", traits: { A: 2, T: 1 } },
+                    { text: "Sự sáng tạo.", traits: { C: 2, I: 1 } },
+                    { text: "Lòng tốt.", traits: { S: 2, C: 1 } },
+                    { text: "Thành tựu.", traits: { L: 2, A: 1 } },
+                    { text: "Cá tính riêng.", traits: { I: 2, C: 1 } }
+                ]
+            },
+            {
+                q: "Nếu phải học một kỹ năng trong 5 năm tới, bạn chọn…",
+                options: [
+                    { text: "Lập trình / công nghệ.", traits: { T: 2, A: 1 } },
+                    { text: "Kinh doanh.", traits: { L: 2, S: 1 } },
+                    { text: "Ngoại ngữ.", traits: { S: 2, C: 1 } },
+                    { text: "Nghệ thuật / thiết kế.", traits: { C: 2, I: 1 } },
+                    { text: "Tâm lý / con người.", traits: { S: 2, A: 1 } }
+                ]
+            },
+            {
+                q: "Bạn thích giải quyết vấn đề bằng…",
+                options: [
+                    { text: "Dữ liệu.", traits: { A: 2, T: 1 } },
+                    { text: "Ý tưởng.", traits: { C: 2, I: 1 } },
+                    { text: "Giao tiếp.", traits: { S: 2, L: 1 } },
+                    { text: "Hành động.", traits: { L: 2, T: 1 } },
+                    { text: "Quan sát và suy luận.", traits: { A: 2, I: 1 } }
+                ]
+            },
+            {
+                q: "Bạn cảm thấy thế nào khi phải đứng trước nhiều người?",
+                options: [
+                    { text: "Rất thoải mái.", traits: { S: 2, L: 1 } },
+                    { text: "Hơi ngại nhưng vẫn làm được.", traits: { A: 1, I: 1 } },
+                    { text: "Khá căng thẳng.", traits: { I: 2, A: 1 } },
+                    { text: "Tôi thích được chú ý.", traits: { L: 2, C: 1 } },
+                    { text: "Tùy tình huống.", traits: { C: 1, A: 1 } }
+                ]
+            },
+            {
+                q: "Nếu có một ý tưởng mà mọi người đều nói là không khả thi, bạn sẽ…",
+                options: [
+                    { text: "Tìm dữ liệu để kiểm chứng.", traits: { A: 2, T: 1 } },
+                    { text: "Vẫn thử nếu mình tin vào nó.", traits: { I: 2, L: 1 } },
+                    { text: "Hỏi người khác để cải thiện ý tưởng.", traits: { S: 2, C: 1 } },
+                    { text: "Bỏ qua và tìm hướng khác.", traits: { A: 1, S: 1 } },
+                    { text: "Biến nó thành một phiên bản khả thi hơn.", traits: { C: 2, T: 1 } }
+                ]
+            },
+            {
+                q: "Điều bạn sợ nhất trong tương lai là…",
+                options: [
+                    { text: "Không đạt được mục tiêu.", traits: { L: 2, A: 1 } },
+                    { text: "Cuộc sống nhàm chán.", traits: { C: 2, I: 1 } },
+                    { text: "Không có người bên cạnh.", traits: { S: 2, L: 1 } },
+                    { text: "Không được tự do.", traits: { I: 2, C: 1 } },
+                    { text: "Không tạo ra điều gì có ý nghĩa.", traits: { A: 2, S: 1 } }
+                ]
+            },
+            {
+                q: "Nếu được chọn một câu mô tả bản thân…",
+                options: [
+                    { text: "Tôi thích hiểu cách mọi thứ hoạt động.", traits: { A: 2, T: 1 } },
+                    { text: "Tôi luôn có rất nhiều ý tưởng.", traits: { C: 2, T: 1 } },
+                    { text: "Tôi quan tâm đến cảm xúc của người khác.", traits: { S: 2, L: 1 } },
+                    { text: "Tôi muốn tạo ra ảnh hưởng.", traits: { L: 2, S: 1 } },
+                    { text: "Tôi muốn tự quyết định cuộc đời mình.", traits: { I: 2, A: 1 } }
+                ]
+            },
+            {
+                q: "Khi có rất nhiều việc phải làm, bạn…",
+                options: [
+                    { text: "Lập danh sách và ưu tiên.", traits: { A: 2, L: 1 } },
+                    { text: "Làm việc mình thích trước.", traits: { C: 2, I: 1 } },
+                    { text: "Làm cùng người khác.", traits: { S: 2, L: 1 } },
+                    { text: "Làm ngay việc khó nhất.", traits: { L: 2, I: 1 } },
+                    { text: "Tùy cảm hứng.", traits: { I: 2, C: 1 } }
+                ]
+            },
+            {
+                q: "30 năm sau, bạn muốn cuộc sống của mình như thế nào?",
+                options: [
+                    { text: "Thành công về chuyên môn.", traits: { A: 2, T: 1 } },
+                    { text: "Có một sự nghiệp sáng tạo.", traits: { C: 2, I: 1 } },
+                    { text: "Có ảnh hưởng tích cực đến xã hội.", traits: { S: 2, L: 1 } },
+                    { text: "Có doanh nghiệp / dự án riêng.", traits: { L: 2, I: 1 } },
+                    { text: "Có cuộc sống tự do và cân bằng.", traits: { I: 2, S: 1 } }
+                ]
+            }
+        ];
+
+        // Dữ liệu nghề nghiệp
+        // Khóa là sự kết hợp của 2 nhóm đứng đầu (theo thứ tự Alphabet để dễ tra cứu)
+        const careers = {
+            "A_T": {
+                title: "Kỹ sư AI / Nhà Khoa Học Dữ Liệu", icon: "🤖",
+                desc: "Bạn sử dụng logic và công nghệ để giải quyết các bài toán phức tạp của nhân loại.",
+                sim: "Ở tuổi 46, bạn có thể đang làm việc trong các phòng lab công nghệ cao, phát triển những thuật toán thay đổi cách con người sống và làm việc."
+            },
+            "C_T": {
+                title: "UX/UI Designer / Creative Technologist", icon: "🎨",
+                desc: "Bạn là cầu nối giữa nghệ thuật và máy móc, tạo ra những trải nghiệm số tuyệt vời.",
+                sim: "30 năm sau, bạn có thể đang thiết kế những giao diện thực tế ảo (VR/AR) cho phép con người tương tác với không gian số như đời thực."
+            },
+            "A_S": {
+                title: "Bác Sĩ / Nhà Tâm Lý Học", icon: "🩺",
+                desc: "Bạn kết hợp khả năng phân tích nhạy bén và sự đồng cảm để chữa lành và thấu hiểu con người.",
+                sim: "Bạn có thể đang điều hành một trung tâm nghiên cứu tâm lý hoặc một phòng khám, nơi bạn dùng dữ liệu và sự thấu cảm để giúp đỡ hàng ngàn người."
+            },
+            "L_S": {
+                title: "Nhà Quản Lý / Nhà Hoạt Động Xã Hội", icon: "🌍",
+                desc: "Bạn sinh ra để dẫn dắt đám đông và mang lại những giá trị tốt đẹp cho cộng đồng.",
+                sim: "Ở tuổi trung niên, bạn có thể là người đứng đầu một tổ chức phi chính phủ hoặc một doanh nghiệp chú trọng vào phát triển bền vững."
+            },
+            "C_S": {
+                title: "Nhà Sáng Tạo Nội Dung / Giáo Dục", icon: "🎙️",
+                desc: "Bạn dùng sự sáng tạo của mình để truyền cảm hứng và kết nối con người.",
+                sim: "Bạn có thể đang sở hữu một nền tảng truyền thông lớn hoặc là một diễn giả, nhà giáo dục truyền cảm hứng cho hàng triệu người trẻ."
+            },
+            "L_T": {
+                title: "Tech Entrepreneur / Product Manager", icon: "🚀",
+                desc: "Bạn có tầm nhìn của một nhà lãnh đạo và sự am hiểu về công nghệ để tạo ra sản phẩm đột phá.",
+                sim: "30 năm sau, biết đâu bạn đang là CEO của một startup công nghệ kỳ lân, định hình lại thị trường bằng những sản phẩm chưa từng có."
+            },
+            "A_I": {
+                title: "Nhà Nghiên Cứu / Chuyên Gia Tư Vấn", icon: "🔬",
+                desc: "Bạn thích làm việc độc lập, đào sâu vào các vấn đề và tìm ra những chân lý mới.",
+                sim: "Bạn có thể là một chuyên gia đầu ngành, xuất bản những cuốn sách hoặc công trình nghiên cứu thay đổi góc nhìn của xã hội về một lĩnh vực."
+            },
+            "C_I": {
+                title: "Nhà Thiết Kế Tự Do / Nghệ Sĩ", icon: "🎭",
+                desc: "Bạn khao khát tự do để biến những ý tưởng điên rồ nhất trong đầu thành hiện thực.",
+                sim: "Ở tuổi 46, bạn có studio riêng, làm việc không gò bó thời gian và tạo ra những tác phẩm nghệ thuật/thiết kế mang đậm dấu ấn cá nhân."
+            },
+            "I_T": {
+                title: "Chuyên Gia An Ninh Mạng / Freelancer IT", icon: "💻",
+                desc: "Bạn có kỹ năng công nghệ đỉnh cao và khao khát một lối sống độc lập, không bị ràng buộc.",
+                sim: "Bạn có thể trở thành một 'du mục kỹ thuật số', làm việc trên bãi biển ở một quốc gia nào đó, bảo vệ hệ thống mạng cho các tập đoàn toàn cầu."
+            },
+            "A_C": {
+                title: "Kiến Trúc Sư / Chiến Lược Gia", icon: "🏛️",
+                desc: "Bạn cân bằng hoàn hảo giữa tư duy logic, cấu trúc và khả năng sáng tạo thẩm mỹ.",
+                sim: "Bạn có thể đang thiết kế những khu đô thị thông minh của tương lai hoặc lập chiến lược cho các chiến dịch quy mô lớn."
+            },
+            "A_L": {
+                title: "Giám Đốc Tài Chính / Nhà Khởi Nghiệp", icon: "📈",
+                desc: "Sự phân tích sắc bén và khả năng ra quyết định giúp bạn dẫn dắt các tổ chức lớn.",
+                sim: "Bạn có thể đang ngồi ở ghế ban quản trị, đưa ra những quyết định chiến lược trị giá hàng triệu đô la bằng dữ liệu và tư duy logic."
+            },
+            "C_L": {
+                title: "Giám Đốc Sáng Tạo / Đạo Diễn", icon: "🎬",
+                desc: "Bạn lãnh đạo người khác không phải bằng mệnh lệnh, mà bằng tầm nhìn sáng tạo độc đáo.",
+                sim: "Bạn có thể đang chỉ đạo một đội ngũ hàng trăm người để tạo ra những chiến dịch truyền thông hoặc tác phẩm điện ảnh bom tấn."
+            },
+            "I_L": {
+                title: "Solo Founder / Nhà Cố Vấn Cấp Cao", icon: "🦅",
+                desc: "Bạn tự chủ, mạnh mẽ và thích tự tay xây dựng đế chế của riêng mình từ con số không.",
+                sim: "Bạn không làm việc cho ai cả, bạn điều hành doanh nghiệp cá nhân tinh gọn nhưng tạo ra doanh thu và tầm ảnh hưởng khổng lồ."
+            },
+            "I_S": {
+                title: "Life Coach / Blogger Du Lịch", icon: "🌱",
+                desc: "Bạn khao khát tự do nhưng vẫn luôn hướng về con người, giúp họ tìm thấy sự cân bằng.",
+                sim: "Bạn có thể đang đi vòng quanh thế giới, viết sách và hướng dẫn người khác cách tìm thấy sự bình yên và tự do trong cuộc sống."
+            }
+        };
+
+        const traitNames = {
+            A: "Phân Tích",
+            C: "Sáng Tạo",
+            S: "Xã Hội",
+            L: "Lãnh Đạo",
+            T: "Công Nghệ",
+            I: "Độc Lập"
+        };
+
+        // Biến trạng thái
+        let currentQuestionIndex = 0;
+        let userAnswers = []; // Lưu trữ index của đáp án người dùng chọn (0-4)
+        
+        // Elements
+        const elLanding = document.getElementById('landing-page');
+        const elQuiz = document.getElementById('quiz-page');
+        const elLoading = document.getElementById('loading-page');
+        const elResult = document.getElementById('result-page');
+        const elQuestionText = document.getElementById('question-text');
+        const elOptionsContainer = document.getElementById('options-container');
+        const elCounter = document.getElementById('question-counter');
+        const elProgressBar = document.getElementById('progress-bar');
+        const btnNext = document.getElementById('btn-next');
+        const btnPrev = document.getElementById('btn-prev');
+
+        // --- Khởi tạo ---
+        window.onload = () => {
+            // Kiểm tra localStorage
+            if (localStorage.getItem('futureQuizAnswers')) {
+                userAnswers = JSON.parse(localStorage.getItem('futureQuizAnswers'));
+                if (userAnswers.length > 0 && userAnswers.length < questions.length) {
+                    currentQuestionIndex = userAnswers.length;
+                    elLanding.classList.add('hidden');
+                    elQuiz.classList.remove('hidden');
+                    renderQuestion();
+                } else if (userAnswers.length === questions.length) {
+                    elLanding.classList.add('hidden');
+                    calculateAndShowResult();
+                }
+            }
+            
+            // Lắng nghe phím Enter/Arrows
+            document.addEventListener('keydown', handleKeyboardNav);
+        };
+
+        // --- Logic Câu hỏi ---
+        function startQuiz() {
+            elLanding.classList.add('hidden');
+            elQuiz.classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            elQuestionText.innerHTML = q.q;
+            elCounter.innerText = `Câu ${currentQuestionIndex + 1}/${questions.length}`;
+            elProgressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+            
+            elOptionsContainer.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const div = document.createElement('div');
+                div.className = 'option-card';
+                div.innerHTML = opt.text;
+                // Nếu đã từng chọn câu này, highlight nó
+                if (userAnswers[currentQuestionIndex] === index) {
+                    div.classList.add('selected');
+                    btnNext.disabled = false;
+                }
+                div.onclick = () => selectOption(index, div);
+                elOptionsContainer.appendChild(div);
+            });
+
+            // Nút back
+            btnPrev.style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
+            
+            // Disable next nếu chưa chọn
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                btnNext.disabled = true;
+            }
+        }
+
+        function selectOption(index, element) {
+            // Xóa class selected của các option khác
+            const cards = elOptionsContainer.getElementsByClassName('option-card');
+            for (let card of cards) {
+                card.classList.remove('selected');
+            }
+            element.classList.add('selected');
+            
+            // Lưu tạm
+            userAnswers[currentQuestionIndex] = index;
+            btnNext.disabled = false;
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === undefined) return;
+            
+            // Lưu vào local
+            localStorage.setItem('futureQuizAnswers', JSON.stringify(userAnswers));
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                // Animation fade out in (đơn giản bằng CSS inline cho mượt)
+                elOptionsContainer.style.opacity = 0;
+                setTimeout(() => {
+                    renderQuestion();
+                    elOptionsContainer.style.opacity = 1;
+                }, 200);
+            } else {
+                // Hoàn thành
+                elQuiz.classList.add('hidden');
+                calculateAndShowResult();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function handleKeyboardNav(e) {
+            if (!elQuiz.classList.contains('hidden')) {
+                if (e.key === 'Enter' && !btnNext.disabled) {
+                    nextQuestion();
+                }
+                // Có thể thêm phím 1,2,3,4,5 để chọn
+                if (['1','2','3','4','5'].includes(e.key)) {
+                    const idx = parseInt(e.key) - 1;
+                    const cards = elOptionsContainer.getElementsByClassName('option-card');
+                    if (cards[idx]) selectOption(idx, cards[idx]);
+                }
+            }
+        }
+
+        // --- Logic Chấm Điểm & Kết Quả ---
+        function calculateAndShowResult() {
+            elLoading.classList.remove('hidden');
+            
+            // Animation text loading
+            const loadingTexts = [
+                "Đang phân tích lựa chọn của bạn...",
+                "Đang kết nối các mảnh ghép tính cách...",
+                "Đang mô phỏng 30 năm tiếp theo..."
+            ];
+            let lIdx = 0;
+            const lInterval = setInterval(() => {
+                lIdx = (lIdx + 1) % loadingTexts.length;
+                document.getElementById('loading-text').innerText = loadingTexts[lIdx];
+            }, 800);
+
+            setTimeout(() => {
+                clearInterval(lInterval);
+                processScores();
+                elLoading.classList.add('hidden');
+                elResult.classList.remove('hidden');
+            }, 2500); // Đợi 2.5s tạo cảm giác tính toán
+        }
+
+        function processScores() {
+            // Khởi tạo điểm
+            let scores = { A: 0, C: 0, S: 0, L: 0, T: 0, I: 0 };
+            
+            // Cộng điểm
+            userAnswers.forEach((ansIndex, qIndex) => {
+                const traits = questions[qIndex].options[ansIndex].traits;
+                for (let key in traits) {
+                    scores[key] += traits[key];
+                }
+            });
+
+            // Sắp xếp điểm để lấy top 2
+            const sortedTraits = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+            const top1 = sortedTraits[0];
+            const top2 = sortedTraits[1];
+
+            // Tìm nghề nghiệp
+            // Sắp xếp top1 và top2 theo alphabet để khớp với key trong object careers
+            const key = [top1, top2].sort().join('_');
+            
+            // Fallback nếu kết hợp không tồn tại trong danh sách (dù đã bao quát khá đủ)
+            let resultData = careers[key];
+            if (!resultData) {
+                // Lấy default theo top 1
+                resultData = {
+                    title: "Nhà Khám Phá Tiên Phong", icon: "✨",
+                    desc: "Bạn có một sự kết hợp tính cách độc đáo không theo khuôn mẫu nào.",
+                    sim: "30 năm sau, bạn đang tự tạo ra một ngành nghề mới chưa từng tồn tại ở thời điểm hiện tại, kết hợp thế mạnh riêng biệt của mình."
+                };
+            }
+
+            renderResultData(resultData, top1, top2, scores);
+        }
+
+        function renderResultData(data, top1, top2, scores) {
+            document.getElementById('res-icon').innerText = data.icon;
+            document.getElementById('res-title').innerText = data.title;
+            document.getElementById('res-desc').innerText = data.desc;
+            document.getElementById('res-simulation').innerText = data.sim;
+            
+            document.getElementById('res-badges').innerHTML = `
+                <span class="badge">⭐ ${traitNames[top1]}</span>
+                <span class="badge">🔥 ${traitNames[top2]}</span>
+            `;
+
+            // Vẽ biểu đồ
+            renderChart(scores);
+
+            // Tạo thư
+            document.getElementById('res-letter').innerText = generateFutureMessage(top1, data.title);
+        }
+
+        function renderChart(scores) {
+            const container = document.getElementById('chart-content');
+            container.innerHTML = '';
+            
+            // Tìm max score để tính phần trăm
+            const maxScore = Math.max(...Object.values(scores));
+
+            for (let key in traitNames) {
+                const row = document.createElement('div');
+                row.className = 'chart-row';
+                
+                const percent = (scores[key] / maxScore) * 100 || 5; // Min 5% để thấy màu
+
+                row.innerHTML = `
+                    <div class="chart-label">${traitNames[key]}</div>
+                    <div class="chart-bar-bg">
+                        <div class="chart-bar-fill" style="width: 0%" data-width="${percent}%"></div>
+                    </div>
+                `;
+                container.appendChild(row);
+            }
+
+            // Animation cho biểu đồ
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.chart-bar-fill');
+                bars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 300);
+        }
+
+        function generateFutureMessage(topTrait, jobTitle) {
+            const messages = {
+                A: `Chào tôi của năm 2026,\nNếu bạn đang đọc những dòng này, có lẽ bạn vẫn đang cố gắng sắp xếp mọi thứ theo logic. Đừng quá lo lắng về việc phải có câu trả lời hoàn hảo cho mọi thứ. Sự tò mò và khả năng phân tích của bạn ngày hôm nay chính là nền tảng để chúng ta trở thành một ${jobTitle} vững vàng ở hiện tại. Cứ tiếp tục học hỏi nhé, tương lai rất đáng mong chờ!`,
+                
+                C: `Chào tôi của năm 2026,\nĐừng bao giờ đánh mất sự điên rồ và những ý tưởng bay bổng trong đầu bạn lúc này nhé! Thế giới luôn nói rằng một số ý tưởng là không tưởng, nhưng nhờ việc bạn không bỏ cuộc, tôi ở tuổi 46 đang sống một cuộc đời sáng tạo và tự do với tư cách là ${jobTitle}. Hãy cứ vẽ tiếp giấc mơ của mình.`,
+                
+                S: `Chào tôi của năm 2026,\nTôi biết bạn luôn quan tâm đến cảm xúc của mọi người xung quanh. Sự tử tế và lòng đồng cảm đó không hề khiến bạn yếu đuối, mà nó đã trở thành sức mạnh lớn nhất của tôi. Bây giờ, với vai trò ${jobTitle}, tôi đang dùng chính tình yêu thương đó để thay đổi cuộc sống của rất nhiều người. Cảm ơn bạn vì đã luôn ấm áp.`,
+                
+                L: `Chào tôi của năm 2026,\nKhó khăn và những lúc bạn phải đứng ra nhận trách nhiệm bây giờ đang tôi luyện nên một phiên bản bản lĩnh của 30 năm sau. Đừng sợ hãi khi phải dẫn dắt người khác hay đối mặt với thất bại. Ở hiện tại, tôi đang là một ${jobTitle} kiên cường, và tất cả là nhờ sự dũng cảm của bạn ngày hôm nay.`,
+                
+                T: `Chào tôi của năm 2026,\nThế giới thay đổi chóng mặt, nhưng sự đam mê của bạn với công nghệ và cái mới đã giúp chúng ta không bị bỏ lại phía sau. Hiện tại tôi đang làm việc như một ${jobTitle}, tiếp xúc với những công nghệ mà năm 2026 bạn chỉ thấy trên phim khoa học viễn tưởng. Hãy cứ đam mê và khám phá nhé!`,
+                
+                I: `Chào tôi của năm 2026,\nSự khao khát tự do và độc lập của bạn đã dẫn lối cho chúng ta. Dù đôi khi con đường đi một mình hơi cô đơn, nhưng nó rất xứng đáng. Tôi hiện tại là một ${jobTitle}, sống một cuộc đời làm chủ chính mình, không gò bó. Hãy tự tin vào đôi chân của mình, bạn đang đi đúng hướng.`
+            };
+
+            return messages[topTrait] || messages['C']; // Default
+        }
+
+        function restartQuiz() {
+            resetData();
+        }
+
+        function resetData() {
+            localStorage.removeItem('futureQuizAnswers');
+            userAnswers = [];
+            currentQuestionIndex = 0;
+            elResult.classList.add('hidden');
+            elQuiz.classList.add('hidden');
+            elLanding.classList.remove('hidden');
+            // reset chart width to 0
+            const bars = document.querySelectorAll('.chart-bar-fill');
+            bars.forEach(bar => bar.style.width = '0%');
+        }
+
+    </script>
+</body>
+</html>
